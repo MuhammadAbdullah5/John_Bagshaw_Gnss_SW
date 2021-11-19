@@ -1,0 +1,14 @@
+To run simulation through Visual Studio 2019 IDE,
+
+1) Open visual studio 2019 and open VCProject\SDR.sln
+2) Open SDR project properties and replace 2017a with 2019b (your version of MATLAB)
+3) Press Alt+F7 to open project properties again, goto Debugging and enter $(SolutionDir)in_data\sample_nottochange_ch1_fileN_0.bin in Command Arguments.
+4) To feed a different file to Visual Studio SDR project, change file name in Debugging -> Command Arguments
+5) Simulation will run and print execution times of acquisition part and tracking part.
+6) Simulation will run and also compare current outputted results with pre-generated MATLAB results and print if each element of array is exactly equal to MATLAB's counterpart.
+
+To run simulation if you want to run executable directly from commandline,
+
+1) open command prompt
+2) to VCProject
+3) issue command ".\x64\Debug\SDR.exe" ".\in_data\sample_nottochange_ch1_fileN_0.bin"
