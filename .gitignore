@@ -1,1 +1,4 @@
 data/
+cpp/.vs/*
+cpp/ARM/*
+cpp/x64/*
