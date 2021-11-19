@@ -1,4 +1,4 @@
-%function acqResults = DelayDepplerMap(longSignal, settings)
+%function acqResults = delay_doppler_map(longSignal, settings)
 
 if isequal(settings.acquisitionType, 'weakAcquisition')
     
@@ -132,7 +132,7 @@ elseif isequal(settings.acquisitionType, 'normalAcquisition')
     % Number of the frequency bins for the given acquisition band (500Hz steps)
     numberOfFrqBins = round(settings.acqSearchBand * 2) + 1;
     % Generate all C/A codes and sample them according to the sampling freq.
-    caCodesTable = makeCaTable(settings);
+    caCodesTable = make_ca_table(settings);
     %--- Initialize arrays to speed up the code -------------------------------
     % Search results of all frequency bins and code shifts (for one satellite)
     results     = zeros(numberOfFrqBins, samplesPerCode);
@@ -244,7 +244,7 @@ elseif isequal(settings.acquisitionType, 'normalAcquisition')
         fprintf('%02d ', PRN);
         
         %--- Generate 10msec long C/A codes sequence for given PRN --------
-        caCode = generateCAcode(PRN);
+        caCode = gen_ca_code(PRN);
         codeValueIndex = floor((ts * (1:10*samplesPerCode)) / ...
             (1/settings.codeFreqBasis));
         longCaCode = caCode((rem(codeValueIndex, 1023) + 1));

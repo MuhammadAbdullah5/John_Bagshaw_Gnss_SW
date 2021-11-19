@@ -1,4 +1,4 @@
-function Scurve()
+function s_curve()
 % SCURVE.M, Henrik Have Lindberg, 2006.03.16
 
 %CVS record:

@@ -1,41 +1,10 @@
-function settings = initSettings()
-%Functions initializes and saves settings. Settings can be edited inside of
-%the function, updated from the command line or updated using a dedicated
-%GUI - "setSettings".  
-%
-%All settings are described inside function code.
-%
-%settings = initSettings()
-%
-%   Inputs: none
-%
-%   Outputs:
-%       settings     - Receiver settings (a structure). 
-
-%--------------------------------------------------------------------------
-%                           SoftGNSS v3.0
+function settings = init_settings()
+%================== GNSS SDR ===========================%
 % 
-% Copyright (C) Darius Plausinaitis
-% Written by Darius Plausinaitis
-%--------------------------------------------------------------------------
-%This program is free software; you can redistribute it and/or
-%modify it under the terms of the GNU General Public License
-%as published by the Free Software Foundation; either version 2
-%of the License, or (at your option) any later version.
-%
-%This program is distributed in the hope that it will be useful,
-%but WITHOUT ANY WARRANTY; without even the implied warranty of
-%MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-%GNU General Public License for more details.
-%
-%You should have received a copy of the GNU General Public License
-%along with this program; if not, write to the Free Software
-%Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
-%USA.
-%--------------------------------------------------------------------------
-
-% CVS record:
-% $Id: initSettings.m,v 1.9.2.31 2006/08/18 11:41:57 dpl Exp $
+% @file: init_settings
+% @brief: Initializes all settings for SDR
+% @date: 11-19-2021                                     
+%=======================================================%
 
 %% Processing settings ====================================================
 % Number of milliseconds to be processed used 36000 + any transients (see
@@ -58,9 +27,9 @@ settings.codeFreqBasis     = 1.023e6;      %[Hz]
 settings.codeLength         = 1023;
 
 %% Raw signal file specific settings ===============================
-cfID                       = fopen('datasetList.txt', 'r');
+cfID                       = fopen('..\data\datasetList.txt', 'r');
 fileName                   = fscanf(cfID, '%c');
-filePath                   = '';
+filePath                   = '..\data\data_in\';
 settings.fileName          = [filePath, fileName];
 [settings.fileID, message] = fopen(settings.fileName, 'rb');
 

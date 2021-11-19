@@ -1,4 +1,4 @@
-function [E, N, U] = cart2utm(X, Y, Z, zone)
+function [E, N, U] = cart_2_utm(X, Y, Z, zone)
 %CART2UTM  Transformation of (X,Y,Z) to (N,E,U) in UTM, zone 'zone'.
 %
 %[E, N, U] = cart2utm(X, Y, Z, zone);

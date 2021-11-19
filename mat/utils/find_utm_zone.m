@@ -1,4 +1,4 @@
-function utmZone = findUtmZone(latitude, longitude)
+function utmZone = find_utm_zone(latitude, longitude)
 %Function finds the UTM zone number for given longitude and latitude.
 %The longitude value must be between -180 (180 degree West) and 180 (180
 %degree East) degree. The latitude must be within -80 (80 degree South) and

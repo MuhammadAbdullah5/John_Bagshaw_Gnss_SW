@@ -1,4 +1,4 @@
-function acqResults = acquisition(longSignal, settings)
+function acqResults = weak_acquisition(longSignal, settings)
 
 %longSignal = data;
 %settings = settings;

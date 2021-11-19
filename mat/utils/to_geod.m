@@ -1,4 +1,4 @@
-function [dphi, dlambda, h] = togeod(a, finv, X, Y, Z)
+function [dphi, dlambda, h] = to_geod(a, finv, X, Y, Z)
 %TOGEOD   Subroutine to calculate geodetic coordinates latitude, longitude,
 %         height given Cartesian coordinates X,Y,Z, and reference ellipsoid
 %         values semi-major axis (a) and the inverse of flattening (finv).

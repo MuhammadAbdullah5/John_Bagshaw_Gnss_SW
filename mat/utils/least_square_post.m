@@ -1,4 +1,4 @@
-function [pos, el, az, dop] = leastSquarePos(satpos, obs, settings)
+function [pos, el, az, dop] = least_square_pos(satpos, obs, settings)
 %Function calculates the Least Square Solution.
 %
 %[pos, el, az, dop] = leastSquarePos(satpos, obs, settings);

@@ -1,22 +1,15 @@
-function [tau1, tau2] = calcLoopCoef(LBW, zeta, k)
-%Function finds loop coefficients. The coefficients are used then in PLL-s
-%and DLL-s.
+function intNumber = twos_comp_2_dec(binaryNumber)
+% TWOSCOMP2DEC(binaryNumber) Converts a two's-complement binary number
+% BINNUMBER (in Matlab it is a string type), represented as a row vector of
+% zeros and ones, to an integer. 
 %
-%[tau1, tau2] = calcLoopCoef(LBW, zeta, k)
-%
-%   Inputs:
-%       LBW           - Loop noise bandwidth
-%       zeta          - Damping ratio
-%       k             - Loop gain
-%
-%   Outputs:
-%       tau1, tau2   - Loop filter coefficients 
- 
+%intNumber = twosComp2dec(binaryNumber)
+
 %--------------------------------------------------------------------------
 %                           SoftGNSS v3.0
 % 
-% Copyright (C) Darius Plausinaitis and Dennis M. Akos
-% Written by Darius Plausinaitis and Dennis M. Akos
+% Copyright (C) Darius Plausinaitis
+% Written by Darius Plausinaitis
 %--------------------------------------------------------------------------
 %This program is free software; you can redistribute it and/or
 %modify it under the terms of the GNU General Public License
@@ -34,12 +27,18 @@ function [tau1, tau2] = calcLoopCoef(LBW, zeta, k)
 %USA.
 %--------------------------------------------------------------------------
 
-%CVS record:
-%$Id: calcLoopCoef.m,v 1.1.2.2 2006/08/14 11:38:22 dpl Exp $
+% CVS record:
+% $Id: twosComp2dec.m,v 1.1.2.4 2006/08/14 11:38:22 dpl Exp $
 
-% Solve natural frequency
-Wn = LBW*8*zeta / (4*zeta.^2 + 1);
+%--- Check if the input is string -----------------------------------------
+if ~isstr(binaryNumber)
+    error('Input must be a string.')
+end
 
-% solve for t1 & t2
-tau1 = k / (Wn * Wn);
-tau2 = 2.0 * zeta / Wn;
+%--- Convert from binary form to a decimal number -------------------------
+intNumber = bin2dec(binaryNumber);
+
+%--- If the number was negative, then correct the result ------------------
+if binaryNumber(1) == '1'
+    intNumber = intNumber - 2^size(binaryNumber, 2);
+end

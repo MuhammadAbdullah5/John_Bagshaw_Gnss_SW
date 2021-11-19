@@ -1,4 +1,4 @@
-function hpol = skyPlot(varargin)
+function hpol = sky_plot(varargin)
 %Function plots "sky view" from the receiver perspective. 
 %
 %h = skyPlot(AZ, EL, PRN, line_style)

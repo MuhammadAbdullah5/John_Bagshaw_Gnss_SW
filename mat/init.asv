@@ -1,8 +1,9 @@
-%================== GNSS SDR ===========================%
-%                                                       
-% @brief: Software Defined GNSS Receiver Software Model 
-% @date: 11-19-2021                                     
-%=======================================================%
+%================== GNSS SDR ========================
+%
+%@brief: Software Defined GNSS Receiver Software Model
+%@date: 11-19-2021
+%@
+%
 
 %% Clean up the environment first =========================================
 clear; close all; clc;
@@ -31,7 +32,7 @@ settings = init_settings();
 
 %% Generate plot of raw data and ask if ready to start processing =========
 try
-    probe_data(settings);
+    probeData(settings);
 catch
     % There was an error, print it and exit
     errStruct = lasterror;
@@ -49,10 +50,10 @@ gnssStart = 2;
 
 if (gnssStart == 1)
     disp(' ');
-    post_processing
+    postProcessing
 elseif (gnssStart == 2)    
     disp(' ');
-    ddm_processing
-    delay_doppler_map
+    DDMprocessing
+    DelayDopplerMap
 end
 

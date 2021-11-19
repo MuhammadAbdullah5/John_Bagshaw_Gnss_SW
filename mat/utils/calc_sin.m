@@ -1,4 +1,4 @@
-function [re, im] = clksin(ar, degree, arg_real, arg_imag)
+function [re, im] = calc_sin(ar, degree, arg_real, arg_imag)
 %Clenshaw summation of sinus with complex argument
 %[re, im] = clksin(ar, degree, arg_real, arg_imag);
 

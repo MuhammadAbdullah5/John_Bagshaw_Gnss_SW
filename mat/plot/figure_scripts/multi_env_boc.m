@@ -1,4 +1,4 @@
-function multEnvBOC()
+function multi_env_boc()
 %--------------------------------------------------------------------------
 % Copyright (C) Darius Plausinaitis and Kai Borre
 % Written by Darius Plausinaitis and Kai Borre

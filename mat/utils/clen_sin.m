@@ -1,4 +1,4 @@
-function  result = clsin(ar, degree, argument)
+function  result = clen_sin(ar, degree, argument)
 %Clenshaw summation of sinus of argument.
 %
 %result = clsin(ar, degree, argument);

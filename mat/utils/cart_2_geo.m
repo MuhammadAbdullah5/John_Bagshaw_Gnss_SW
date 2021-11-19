@@ -1,4 +1,4 @@
-function [phi, lambda, h] = cart2geo(X, Y, Z, i)
+function [phi, lambda, h] = cart_2_geo(X, Y, Z, i)
 %CART2GEO Conversion of Cartesian coordinates (X,Y,Z) to geographical
 %coordinates (phi, lambda, h) on a selected reference ellipsoid.
 %

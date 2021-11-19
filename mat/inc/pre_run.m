@@ -1,4 +1,4 @@
-function [channel] = preRun(acqResults, settings)
+function [channel] = pre_run(acqResults, settings)
 %Function initializes tracking channels from acquisition data. The acquired
 %signals are sorted according to the signal strength. This function can be
 %modified to use other satellite selection algorithms or to introduce

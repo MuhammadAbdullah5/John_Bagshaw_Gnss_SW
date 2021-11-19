@@ -1,4 +1,4 @@
-function word = checkPhase(word, D30Star)
+function word = check_phase(word, D30Star)
 %Checks the parity of the supplied 30bit word.
 %The last parity bit of the previous word is used for the calculation.
 %A note on the procedure is supplied by the GPS standard positioning

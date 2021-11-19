@@ -1,7 +1,7 @@
-function showChannelStatus(channel, settings)
+function show_channel_status(channel, settings)
 %Prints the status of all channels in a table.
 %
-%showChannelStatus(channel, settings)
+%show_channel_status(channel, settings)
 %
 %   Inputs:
 %       channel     - data for each channel. It is used to initialize and

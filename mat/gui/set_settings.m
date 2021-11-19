@@ -1,4 +1,4 @@
-function varargout = setSettings(varargin)
+function varargout = set_settings(varargin)
 % SETSETTINGS M-file for setSettings.fig
 %      SETSETTINGS, by itself, creates a new SETSETTINGS or raises the existing
 %      singleton*.

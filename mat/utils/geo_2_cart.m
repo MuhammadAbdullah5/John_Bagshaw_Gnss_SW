@@ -1,4 +1,4 @@
-function [X, Y, Z] = geo2cart(phi, lambda, h, i)
+function [X, Y, Z] = geo_2_cart(phi, lambda, h, i)
 %GEO2CART Conversion of geographical coordinates (phi, lambda, h) to
 %Cartesian coordinates (X, Y, Z). 
 %

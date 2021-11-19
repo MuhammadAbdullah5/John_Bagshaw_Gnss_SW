@@ -1,4 +1,4 @@
-function plotNavigation(navSolutions, settings)
+function plot_navigation(navSolutions, settings)
 %Functions plots variations of coordinates over time and a 3D position
 %plot. It plots receiver coordinates in UTM system or coordinate offsets if
 %the true UTM receiver coordinates are provided.  

@@ -1,4 +1,4 @@
-function [navSolutions, eph] = postNavigation(trackResults, settings)
+function [navSolutions, eph] = post_navigation(trackResults, settings)
 %Function calculates navigation solutions for the receiver (pseudoranges,
 %positions). At the end it converts coordinates from the WGS84 system to
 %the UTM, geocentric or any additional coordinate system.

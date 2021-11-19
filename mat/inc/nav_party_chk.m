@@ -1,4 +1,4 @@
-function status = navPartyChk(ndat)
+function status = nav_party_chk(ndat)
 % This function is called to compute and status the parity bits on GPS word.
 % Based on the flowchart in Figure 2-10 in the 2nd Edition of the GPS-SPS
 % Signal Spec.

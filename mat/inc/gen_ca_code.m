@@ -1,4 +1,4 @@
-function CAcode = generateCAcode(PRN)
+function CAcode = gen_ca_code(PRN)
 % generateCAcode.m generates one of the 32 GPS satellite C/A codes.
 %
 % CAcode = generateCAcode(PRN)

@@ -68,7 +68,7 @@ phasePoints = (0 : (samplesPerCode-1)) * 2 * pi * ts;
 numberOfFrqBins = round(settings.acqSearchBand * 2) + 1;
 
 % Generate all C/A codes and sample them according to the sampling freq.
-caCodesTable = makeCaTable(settings);
+caCodesTable = make_ca_table(settings);
 
 
 %--- Initialize arrays to speed up the code -------------------------------
@@ -204,7 +204,7 @@ for PRN = settings.acqSatelliteList
         fprintf('%02d ', PRN);
         
         %--- Generate 10msec long C/A codes sequence for given PRN --------
-        caCode = generateCAcode(PRN);
+        caCode = gen_ca_code(PRN);
         
         codeValueIndex = floor((ts * (1:10*samplesPerCode)) / ...
                                (1/settings.codeFreqBasis));

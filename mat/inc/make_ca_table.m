@@ -1,4 +1,4 @@
-function caCodesTable = makeCaTable(settings)
+function caCodesTable = make_ca_table(settings)
 %Function generates CA codes for all 32 satellites based on the settings
 %provided in the structure "settings". The codes are digitized at the
 %sampling frequency specified in the settings structure.
@@ -53,7 +53,7 @@ tc = 1/settings.codeFreqBasis;  % C/A chip period in sec
 %=== For all satellite PRN-s ...
 for PRN = 1:32
     %--- Generate CA code for given PRN -----------------------------------
-    caCode = generateCAcode(PRN);
+    caCode = gen_ca_code(PRN);
  
     %=== Digitizing =======================================================
     

@@ -110,14 +110,14 @@ if (fid > 0)
         
     end
     
-    plotAcquisition(acqResults);
+    plot_acquisition(acqResults);
 
 %% Initialize channels and prepare for the run ============================
     % Start further processing only if a GNSS signal was acquired (the
     % field FREQUENCY will be set to 0 for all not acquired signals)
     if (any(acqResults.carrFreq))
-        channel = preRun(acqResults, settings);
-        showChannelStatus(channel, settings);
+        channel = pre_run(acqResults, settings);
+        show_channel_status(channel, settings);
     else
         % No satellites to track, exit
         disp('No GNSS signals detected, signal processing finished.');

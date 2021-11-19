@@ -1,4 +1,4 @@
-function probeData(varargin)
+function probe_data(varargin)
 %Function plots raw data information: time domain plot, a frequency domain
 %plot and a histogram. 
 %

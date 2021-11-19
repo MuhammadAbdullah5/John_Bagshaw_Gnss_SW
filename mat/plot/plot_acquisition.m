@@ -1,4 +1,4 @@
-function plotAcquisition(acqResults)
+function plot_acquisition(acqResults)
 %Functions plots bar plot of acquisition results (acquisition metrics). No
 %bars are shown for the satellites not included in the acquisition list (in
 %structure SETTINGS). 
