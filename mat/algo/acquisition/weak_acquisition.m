@@ -67,7 +67,7 @@ phasePoints = (0 : (samplesPerCode-1)) * 2 * pi * ts;
 numberOfFrqBins = round(settings.acqSearchBand * 2) + 1;
 
 % Generate all C/A codes and sample them according to the sampling freq.
-caCodesTable = makeCaTable(settings);
+caCodesTable = make_ca_table(settings);
 
 %--- Initialize acqResults ------------------------------------------------
 % Carrier frequencies of detected signals
@@ -80,7 +80,7 @@ acqResults.peakMetric   = zeros(1, 32);
 fprintf('(');
 
 Nfd        = settings.acqSearchBand / 0.5 + 1;
-Sblock     = floor((samplesPerCode * settings.acqMS) / Nfd);
+Sblock     = floor((samplesPerCode * settings.coherentIntegrationMs) / Nfd);
 Nint       = Sblock * Nfd;
 Nblocks    = floor(settings.dataExtractLen / Sblock) - Nfd;
 
@@ -132,7 +132,7 @@ for PRN = settings.acqSatelliteList
         if peakTo2ndPeakRatio > settings.acqThreshold
             
             % Save properties of the detected satellite signal
-            acqResults.carrFreq(PRN)  = settings.IF + 1 / (settings.acqMS * 1e-3 * freqBin);
+            acqResults.carrFreq(PRN)  = settings.IF + 1 / (settings.coherentIntegrationMs * 1e-3 * freqBin);
             acqResults.codePhase(PRN) = codePhase;
             
             signalFound=1;

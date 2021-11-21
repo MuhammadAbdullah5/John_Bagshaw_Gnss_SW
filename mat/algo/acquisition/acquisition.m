@@ -111,22 +111,26 @@ for PRN = settings.acqSatelliteList
         cosCarr = cos(frqBins(frqBinIndex) * phasePoints);
 
         %--- "Remove carrier" from the signal -----------------------------
+        acqRes1 = zeros(1, samplesPerCode);
+        acqRes2 = zeros(1, samplesPerCode);
+        
         acqResIfft1 = zeros(1, samplesPerCode);
         acqResIfft2 = zeros(1, samplesPerCode);
         
-        if floor(settings.acqMS/2) == 0
-            error('acqMS value (specified in initSettings.m)',...
+        if floor(settings.incoherentIntegrationMs/2) == 0
+            error('coherentIntegrationMs value (specified in initSettings.m)',...
                   'should be atleast 2 for normal acquisition to work.');
         end
         
-        for ms = 1 : floor(settings.acqMS/2)
+        % Do incoherent integration as well.
+        for ms = 1 : floor(settings.incoherentIntegrationMs/2)
             
-            msIdx1 = 2*(ms-1)+1;
-            msIdx2 = 2*(ms-1)+2;
+            msIdx1 = 2*(ms-1)+1; % 1, 3, 5, 7, 9
+            msIdx2 = 2*(ms-1)+2; % 2, 4, 6, 8, 10
             
             % Create two 1msec vectors of data to correlate with and one with zero DC
-            signal1 = longSignal(1 : samplesPerCode);
-            signal2 = longSignal(samplesPerCode+1 : 2*samplesPerCode);
+            signal1 = longSignal((msIdx1-1)*samplesPerCode+1 : (msIdx1)*samplesPerCode);
+            signal2 = longSignal((msIdx2-1)*samplesPerCode+1 : (msIdx2)*samplesPerCode);
             
             I1      = sinCarr .* signal1;
             Q1      = cosCarr .* signal1;
@@ -143,13 +147,18 @@ for PRN = settings.acqSatelliteList
             convCodeIQ2 = IQfreqDom2 .* caCodeFreqDom;
             
             %--- Perform inverse DFT and store correlation results ------------
-            acqResIfft1 = acqResIfft1 + ifft(convCodeIQ1);
-            acqResIfft2 = acqResIfft2 + ifft(convCodeIQ2);
+            acqResIfft1 = ifft(convCodeIQ1);
+            acqResIfft2 = ifft(convCodeIQ2);
+            
+            acqResIfft1 = abs(acqResIfft1).^2;
+            acqResIfft2 = abs(acqResIfft2).^2;
+            
+            % Accumulate the results.
+            acqRes1 = acqRes1 + acqResIfft1;
+            acqRes2 = acqRes2 + acqResIfft2;
+
         end
         
-        acqRes1 = abs(acqResIfft1) .^ 2;
-        acqRes2 = abs(acqResIfft2) .^ 2;
-
         %--- Check which msec had the greater power and save that, will
         %"blend" 1st and 2nd msec but will correct data bit issues
         if (max(acqRes1) > max(acqRes2))

@@ -22,7 +22,7 @@ if isequal(settings.acquisitionType, 'weakAcquisition')
     numberOfFrqBins = round(settings.acqSearchBand * 2) + 1;
 
     % Generate all C/A codes and sample them according to the sampling freq.
-    caCodesTable = makeCaTable(settings);
+    caCodesTable = make_ca_table(settings);
 
 
     %--- Initialize acqResults ------------------------------------------------

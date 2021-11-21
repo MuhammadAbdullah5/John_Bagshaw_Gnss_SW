@@ -42,8 +42,9 @@ else
 end
 
 % Specify acquisitin milliseconds
-%settings.acqMS           = 1000;
-settings.acqMS           = 2;
+%settings.coherentIntegrationMs = 1000;
+%settings.coherentIntegrationMs = 10;
+settings.incoherentIntegrationMs = 2;
 %if contains(settings.fileName, 'sample_nottochange_ch1_fileN')
 if contains(settings.fileName, 'Woodbine_47a')
     
@@ -117,14 +118,19 @@ end
 %% Acquisition settings ===================================================
 % Algorithm type for acquisition
 settings.acquisitionType = 'normalAcquisition';
-% settings.acquisitionType = 'weakAcquisition';
-% settings.acquisitionType = 'halfBitAcquisition';
+%settings.acquisitionType = 'weakAcquisition';
+%settings.acquisitionType = 'halfBitAcquisition';
 
 % Decide if modulation is required based on 
 % what acquisition algortihm accepts and format of dataset
 if isequal(settings.acquisitionType, 'normalAcquisition')
    
-    settings.dataExtractLen       = (11 + settings.acqMS) * settings.samplesPerCode * 4;
+    if (settings.incoherentIntegrationMs < 11)
+        settings.dataExtractLen = 11 * settings.samplesPerCode * 4;
+    else
+        settings.dataExtractLen = (settings.incoherentIntegrationMs) * settings.samplesPerCode * 4;
+    end
+    
     % normal and halfbit acquisition accept IF data
     if  settings.isBasebandSignal == 1
         settings.modulationRequired   = 1;
@@ -136,7 +142,7 @@ if isequal(settings.acquisitionType, 'normalAcquisition')
     
 elseif isequal(settings.acquisitionType, 'halfBitAcquisition')
 
-    settings.dataExtractLen       =  settings.acqMS * settings.samplesPerCode;
+    settings.dataExtractLen       =  settings.coherentIntegrationMs * settings.samplesPerCode;
     % normal and halfbit acquisition accept IF data
     if  settings.isBasebandSignal == 1
         settings.modulationRequired   = 1;
@@ -161,17 +167,17 @@ elseif isequal(settings.acquisitionType, 'weakAcquisition')
 end
 % 
 % if settings.dataExtractLen > settings.dataLength
-%     warning('acqMS exceeds the duration of dataset.\nLimiting to maximum duration of dataset: %d',...
+%     warning('coherentIntegrationMs exceeds the duration of dataset.\nLimiting to maximum duration of dataset: %d',...
 %         settings.dataLength);
 %     prevDataExtractLen = settings.dataExtractLen;
-%     prevAcqMS = settings.acqMS;
+%     prevAcqMS = settings.coherentIntegrationMs;
 %     settings.dataExtractLen = settings.dataLength;
 %     len = settings.dataExtractLen / settings.samplesPerCode / 2;
 %     if prevAcqMS > floor(settings.dataLength/settings.samplesPerCode/2)
-%         settings.acqMS = floor(len);
+%         settings.coherentIntegrationMs = floor(len);
 %     end
-%     warning('acqMS reduced from %d to %d, dataExtractLen reduced from %d to %d', ...
-%         prevAcqMS, settings.acqMS, prevDataExtractLen, settings.dataExtractLen);
+%     warning('coherentIntegrationMs reduced from %d to %d, dataExtractLen reduced from %d to %d', ...
+%         prevAcqMS, settings.coherentIntegrationMs, prevDataExtractLen, settings.dataExtractLen);
 % end
 
 

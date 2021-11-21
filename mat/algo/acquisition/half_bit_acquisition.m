@@ -43,7 +43,6 @@ else
     
 end
 
-
 signalEven = longSignal(1 : data_len_ms*samplesPerCode);
 signalOdd  = longSignal(10*samplesPerCode+1 : (10 + data_len_ms)*samplesPerCode);
 
