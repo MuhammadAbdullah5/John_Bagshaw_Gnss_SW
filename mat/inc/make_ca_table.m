@@ -1,4 +1,4 @@
-function caCodesTable = make_ca_table(settings)
+function caCodesTable = make_ca_table(settings, seqLen)
 %Function generates CA codes for all 32 satellites based on the settings
 %provided in the structure "settings". The codes are digitized at the
 %sampling frequency specified in the settings structure.
@@ -40,8 +40,7 @@ function caCodesTable = make_ca_table(settings)
 %$Id: makeCaTable.m,v 1.1.2.6 2006/08/14 11:38:22 dpl Exp $
 
 %--- Find number of samples per spreading code ----------------------------
-samplesPerCode = round(settings.samplingFreq / ...
-                           (settings.codeFreqBasis / settings.codeLength));
+samplesPerCode = settings.dataParams.samplesPerCode;
 
 %--- Prepare the output matrix to speed up function -----------------------
 caCodesTable = zeros(32, samplesPerCode);
@@ -69,6 +68,7 @@ for PRN = 1:32
     %--- Make the digitized version of the C/A code -----------------------
     % The "upsampled" code is made by selecting values form the CA code
     % chip array (caCode) for the time instances of each sample.
-    caCodesTable(PRN, :) = caCode(codeValueIndex);
+    seqInd = mod(0:seqLen-1, samplesPerCode) + 1;
+    caCodesTable(PRN, :) = caCode(codeValueIndex(seqInd));
     
 end % for PRN = 1:32
