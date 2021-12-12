@@ -16,8 +16,8 @@ sdrParams.sysParams.acqAlgosList = {'norm_acq_parcode', ...
                                    % 'weak_acquisition_hb',...
                                   };
     
-sdrParams.sysParams.coherentProcessingTimeMS   = 2;
-sdrParams.sysParams.incoherentProcessingTimeMS = 4;
+sdrParams.sysParams.coherentProcessingTimeMS   = 1;
+sdrParams.sysParams.incoherentProcessingTimeMS = 2;
 
 if sdrParams.sysParams.coherentProcessingTimeMS > 10
     sdrParams.sysParams.coherentProcessingTimeMS = 10; % Cannot be greater than 10ms.

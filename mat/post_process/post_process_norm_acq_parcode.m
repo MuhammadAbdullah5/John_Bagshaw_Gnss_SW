@@ -127,7 +127,7 @@ if acqPrnCount
             (maxValArr(1) - 2*maxValArr(2)+maxValArr(3));
         dopplerShiftInt = dopplerShiftInt - floor(numDopplerSamples/2)-1;
         dopplerShiftHz = (dopplerShiftInt + doppleShiftError) * dopplerResHz;
-        
+        dopplerShiftAxis = ((0:numDopplerSamples-1) - floor(numDopplerSamples/2))* dopplerResHz;
         
         % Refine code delay results.
         ifFreqEst = dataFileParams.intermFreqHz + dopplerShiftHz;
@@ -193,6 +193,9 @@ if acqPrnCount
         chAlgoAcqResults{aprnIdx}.dopplerShiftHz = ifFreqEst;
         chAlgoAcqResults{aprnIdx}.satellitePrn   = prnIdx;
         chAlgoAcqResults{aprnIdx}.ddm            = squeeze(delayDopplerMapAcq(prnIdx, :, :));
+        chAlgoAcqResults{aprnIdx}.dopplerShiftAxis=dopplerShiftAxis;
+        chAlgoAcqResults{aprnIdx}.codeDelayAxis  = 0:averFactor:numCodeSamples-1;
+
     end
     
     acqResults(1).chAlgoAcqResults = chAlgoAcqResults;

@@ -4,13 +4,14 @@ function [ caCode ] = gen_ca_code( filePath, prnList )
 % a PRN where M is length of input argument list and N
 % is equal to the number of chips (1023).
 fileName = [filePath, 'caCode.mat'];
-genCaCode = false;
+genCaCode = true;
 
 if exist(fileName, 'file') == 2
     caCode=load(fileName);
     if (length(prnList) == 1 && any(ismember(prnList, caCode.prnList))) || ...
             all(caCode.prnList == prnList)
         caCode=caCode.caCode(prnList, :);
+        genCaCode = false;
     else
         genCaCode = true; 
     end

@@ -43,7 +43,7 @@ while sdrParams.stateParams.numFilesProcessed < ...
 
     % Reset frame counter
     sdrParams.stateParams.currFrameNum = 0;
-    
+        
     %%% pre-processing per input data file.
     [ppData, rxData] = pre_process(sdrParams);
     
@@ -61,15 +61,18 @@ while sdrParams.stateParams.numFilesProcessed < ...
         % global post processing managed internally.
         postProcessResults = post_process(sdrParams, rxData, processResults);
         
-        %%% Plotting the results.
-        plot_acquisition_results(sdrParams, postProcessResults);
-
-        %%% Save results to configured file format.
-        save_acquisition_resutls(sdrParams, postProcessResults);
-        
         sdrParams.stateParams.currFrameNum = ...
             sdrParams.stateParams.currFrameNum + 1;        
     end
+    
+    
+    %%% Plotting the results.
+    plot_acquisition_results(sdrParams, postProcessResults);
+
+    
+    %%% Save results to configured file format.
+    save_acquisition_resutls(sdrParams, postProcessResults);
+
     
     print_string('-----------------------------------------------------------------');
     print_string(['Data processing completed for file: ',...
@@ -84,5 +87,4 @@ end
 print_string("============================");
 print_string("Program Completed. Good Bye!");
 print_string("============================");
-
 

@@ -31,6 +31,9 @@ for chIdx=1:numChannels
              % Bar plot for peak metric bar graph of acquired satellites
              plot_acq_peak_metric_bars(sdrParams, postProcessResults, chIdx, channelId, acqAlgoIdx);
              
+             % DDM plots
+             plot_acq_ddm_map(sdrParams, postProcessResults, chIdx, channelId, acqAlgoIdx);
+             
          end
     end
 end
@@ -43,15 +46,13 @@ nacqPrnPeakMetric = postProcessResults.acqResults{chIdx, algoIdx}.acqResults.nac
 nacqPrnList       = postProcessResults.acqResults{chIdx, algoIdx}.acqResults.nacqStats.nacqPrnList;
 numAcqSatellites  = length(acqResults);
 currFileNum       = sdrParams.stateParams.numFilesProcessed + 1;
-currFrameNum      = sdrParams.stateParams.currFrameNum + 1;
+currFrameNum      = sdrParams.stateParams.currFrameNum;
 numTotalFrames    = sdrParams.stateParams.numTotalFrames;
 acqAlgoList = sdrParams.sysParams.acqAlgosList;
 
 
 % prepare fields
-titleStr = sprintf('Acquisition Results (frame %d/%d)\n', ...
-    currFrameNum, ...
-    numTotalFrames);
+titleStr = sprintf('Acquisition Results. Total Frames %d\n', numTotalFrames);
 channelStr = sprintf('Data channel: %d\n', channelId(chIdx));
 acqAlgoStr = sprintf('Acquisition Algorithm: %s', acqAlgoList{algoIdx});
 
@@ -64,11 +65,11 @@ end
 peakMetric = [acqPeakMetric, nacqPrnPeakMetric];
 peakMetricLoc = [acqPeakMetricLoc, nacqPrnList];
 
-figWindowTitle = sprintf('File#%d, Data_channel#%d, Algo#%d, Frame#%d', ...
+figWindowTitle = sprintf('Acquisition Bar Graph. File#%d, Data_channel#%d, Algo#%d, Frame#%d', ...
     currFileNum, chIdx, algoIdx, currFrameNum);
 figure('NumberTitle', 'off', 'Name', figWindowTitle);
 
-ylimit = 50;
+ylimit = max(acqPeakMetric)*1.5;
 hAxes = newplot();
 hAxes.NextPlot = 'replaceall';
 bar(hAxes, peakMetricLoc, peakMetric);
@@ -110,4 +111,45 @@ y = [leftBottomPointY + plotHeight * 0.6, leftBottomPointY + ...
 annotation('textarrow',x,y,'String','Threshold ', 'Units','normalized', 'Color', 'r');
 plot(0:33, sdrParams.sysParams.acqThreshold*ones(1, 34), 'r--');
 hold(hAxes, 'off');
+end
+
+
+function plot_acq_ddm_map(sdrParams, postProcessResults, chIdx, channelId, algoIdx)
+
+acqResults        = postProcessResults.acqResults{chIdx, algoIdx}.acqResults.chAlgoAcqResults;
+numAcqSatellites  = length(acqResults);
+currFileNum       = sdrParams.stateParams.numFilesProcessed + 1;
+numTotalFrames    = sdrParams.stateParams.numTotalFrames;
+acqAlgoList = sdrParams.sysParams.acqAlgosList;
+
+
+% prepare fields
+
+for aprnIdx=1:numAcqSatellites
+    
+    figWindowTitle = sprintf('Acquisition Delay Doppler Map. File#%d, Data_channel#%d, Algo#%d, Frames#%d', ...
+    currFileNum, chIdx, algoIdx, numTotalFrames);
+
+    figure('NumberTitle', 'off', 'Name', figWindowTitle);
+    
+    dopplerShiftAxis = acqResults{aprnIdx}.dopplerShiftAxis;
+    codeDelayAxis = acqResults{aprnIdx}.codeDelayAxis;
+
+    
+    mesh(codeDelayAxis, dopplerShiftAxis, acqResults{aprnIdx}.ddm);
+
+
+    titleStr = sprintf('Acquisition Delay Doppler Map\n ');
+    channelStr = sprintf('Data channel: %d\n', channelId(chIdx));
+    acqAlgoStr = sprintf('Acquisition Algorithm: %s\n', acqAlgoList{algoIdx});
+    prnStr     = sprintf('PRN : %d', acqResults{aprnIdx}.satellitePrn);
+
+    
+    title ([titleStr, channelStr, acqAlgoStr, prnStr], 'Interpreter', 'none');
+    zlabel('Correlation Magnitude');
+    ylabel('Doppler Shift (Hz)');
+    xlabel('Code Phase (samples)');
+
+end
+
 end

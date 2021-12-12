@@ -67,12 +67,12 @@ end
 acqPrnIdx = (peakMetricList>sdrParams.sysParams.acqThreshold);
 nacqPrnIdx = ~acqPrnIdx;
 
-aPrnList           = satelliteList(acqPrnIdx);
-aprnLocList        = peakLocList(acqPrnIdx);
-aprnPeakMetricList = peakMetricList(acqPrnIdx);
+aPrnList           = satelliteList  (acqPrnIdx);
+aprnLocList        = peakLocList    (acqPrnIdx);
+aprnPeakMetricList = peakMetricList (acqPrnIdx);
 
-nonAcqPeakMetricList = peakMetricList(nacqPrnIdx);
-naprnList            = satelliteList(nacqPrnIdx);
+nonAcqPeakMetricList = peakMetricList (nacqPrnIdx);
+naprnList            = satelliteList  (nacqPrnIdx);
 
 acqPrnCount = length(aPrnList);
 
@@ -132,7 +132,7 @@ if acqPrnCount
             (maxValArr(1) - 2*maxValArr(2)+maxValArr(3));
         dopplerShiftInt = dopplerShiftInt - floor(numDopplerFftBins/2) - 1;    
         dopplerShiftHz = (dopplerShiftInt + doppleShiftError) * dopplerResHz;
-        
+        dopplerShiftAxis = ((0:numDopplerFftBins-1) - floor(numDopplerFftBins/2))* dopplerResHz;
         
         %%% Refine code delay results.
         ifFreqEst = intermFreqHz - dopplerShiftHz;
@@ -202,7 +202,10 @@ if acqPrnCount
         chAlgoAcqResults{aprnIdx}.peakMetric     = aprnPeakMetricList(aprnIdx);
         chAlgoAcqResults{aprnIdx}.dopplerShiftHz = ifFreqEst;
         chAlgoAcqResults{aprnIdx}.satellitePrn   = prnIdx;
-        chAlgoAcqResults{aprnIdx}.ddm            = squeeze(delayDopplerMapAcq(prnIdx, :, :));
+        chAlgoAcqResults{aprnIdx}.ddm            = squeeze(delayDopplerMapAcq(prnIdx, :, :)).';
+        chAlgoAcqResults{aprnIdx}.dopplerShiftAxis=dopplerShiftAxis;
+        chAlgoAcqResults{aprnIdx}.codeDelayAxis  = 0:averFactor:averFactor*numCodeSamples-1;
+        
     end
     
     acqResults(1).chAlgoAcqResults = chAlgoAcqResults;
