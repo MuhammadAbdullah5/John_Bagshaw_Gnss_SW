@@ -10,14 +10,14 @@ print_string("Initializing SDR parameters.");
 % Users can specify most important parameters here.
 % TODO: Move these important user settings to settings.txt input file.
 sdrParams.sysParams.acqAlgosList = {'norm_acq_parcode', ...
-                                    'weak_acq_dbzp',...
+                                   % 'weak_acq_dbzp',...
                                    %  'weak_acq_dbzp'   ,...
                                    % Add more... e.g.
                                    % 'weak_acquisition_hb',...
                                   };
     
-sdrParams.sysParams.coherentProcessingTimeMS   = 1;
-sdrParams.sysParams.incoherentProcessingTimeMS = 2;
+sdrParams.sysParams.coherentProcessingTimeMS   = 2;
+sdrParams.sysParams.incoherentProcessingTimeMS = 10;
 
 if sdrParams.sysParams.coherentProcessingTimeMS > 10
     sdrParams.sysParams.coherentProcessingTimeMS = 10; % Cannot be greater than 10ms.
@@ -41,7 +41,7 @@ sdrParams.sysParams.skipAcquisition   = 0;       % Skips acquisition in the scri
 sdrParams.sysParams.acqSatelliteList  = 1:32;    % List of satellites to look for. Some satellites can be excluded to speed up acquisition [PRN numbers]
 sdrParams.sysParams.acqDopplerBwKhz   = 50;      % Band around IF to search for satellite signal. Depends on max Doppler
 sdrParams.sysParams.acqDopplerResHz   = 1000;    % Doppler resolution
-sdrParams.sysParams.acqThreshold      = 2.5;     % Threshold for the signal presence decision rule
+sdrParams.sysParams.acqThreshold      = 4;     % Threshold for the signal presence decision rule
 sdrParams.sysParams.numAcqSatellites  = 8;       % Keep record of strongest 8 satellites.
 
 % Tracking Parameters
@@ -73,6 +73,15 @@ end
 fileNameStr = fileread([sdrParams.stateParams.dataPathIn, ...
     dataInfoFileName]); % Read data file names form data list file.
 sdrParams.stateParams.fileNames = regexp(fileNameStr, '\r\n|\r|\n', 'split');
+
+discardEmptyFileNames = cell(0);
+for fileName=1:length(sdrParams.stateParams.fileNames)
+    if ~isempty(sdrParams.stateParams.fileNames{fileName})
+        discardEmptyFileNames{end+1} = sdrParams.stateParams.fileNames{fileName};
+    end
+end
+
+sdrParams.stateParams.fileNames = discardEmptyFileNames;
 
 for fileName=sdrParams.stateParams.fileNames
     
@@ -127,7 +136,7 @@ for fileName=sdrParams.stateParams.fileNames
         
     else
         error([fileName, ' is not present in ', ...
-            sdrParams.sysParams.dataPathIn, '.']);
+            sdrParams.stateParams.dataPathIn, '.']);
     end
 end
 

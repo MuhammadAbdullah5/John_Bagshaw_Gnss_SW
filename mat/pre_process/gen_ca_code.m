@@ -9,7 +9,7 @@ genCaCode = true;
 if exist(fileName, 'file') == 2
     caCode=load(fileName);
     if (length(prnList) == 1 && any(ismember(prnList, caCode.prnList))) || ...
-            all(caCode.prnList == prnList)
+            all(length(caCode.prnList) == length(prnList))
         caCode=caCode.caCode(prnList, :);
         genCaCode = false;
     else

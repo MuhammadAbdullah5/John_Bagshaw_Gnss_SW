@@ -69,6 +69,8 @@ end
 acqResults.ddMap = delayDopplerCohMat;
 acqResults.averFactor = averFactor;
 acqResults.dopplerResHz = ppData.dopplerResHz;
+acqResults.numCodeSamples = numCodeSamples;
+acqResults.numDopplerBins = numDopplerSamples;
 
 elseif optimizeOption == 2
     
@@ -139,5 +141,7 @@ acqResults.numCodeSamples = numCodeSamples;
 acqResults.numDopplerBins = numDopplerSamples;
 acqResults.dopplerResHz = ppData.dopplerResHz;
 end
+toc;
+
 end
 
