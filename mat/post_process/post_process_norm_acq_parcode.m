@@ -31,16 +31,15 @@ peakLocList          = zeros(1, numPrns);
 
 excludeBinRangePeakAtZero = [10:floor(numCodeSamples/averFactor)-10];
 
-% Check if a satellite should be acquired
+% Check if a satellite should be acquiredá
 % if its peak metric is greater than threshold.
 
 for prnIdx = 1:numPrns
-    delayDopplerMapAcqPrn = squeeze(delayDopplerMapAcq(prnIdx, :, :));
-    [peakValue, peakLoc] = max(delayDopplerMapAcqPrn(:));
-    
+    delayDopplerMapAcqPrn  = squeeze(delayDopplerMapAcq(prnIdx, :, :));
+    [peakValue, peakLoc]   = max(delayDopplerMapAcqPrn(:));    
+        
     if length(peakValue) > 1
-        peakValue = peakValue(1);
-        peakLoc = peakLoc(1);
+        error('There can be only one true max value. TODO: handle this.');
     end
     
     % Calculate peak metric for all satellite signals
@@ -149,7 +148,7 @@ if acqPrnCount
             caCode = gen_ca_code(sdrParams.stateParams.dataPathIn, prnIdx);
             caCode = caCode(caCodeMappingInd);
             
-            [corrOut, lags] = xcorr(rxDataMs, caCode, ceil(averFactor/2));
+            [corrOut, lags] = xcorr(rxDataMs, caCode, averFactor);
             [~, maxIdx] = max(abs(corrOut));
             if length(maxIdx) > 1
                 maxIdx = maxIdx(1);
@@ -162,10 +161,10 @@ if acqPrnCount
             rxDataMs = rxDataMs .* dopplerFreqExp;
             
             acqDopplerBW = sdrParams.sysParams.acqDopplerBwKhz * 1e3;
-            fftNumPts = 8*2^(nextpow2(length(rxDataMs)));
+            fftNumPts = 2*2^(nextpow2(length(rxDataMs)));
             deltaF = dataFileParams.samplingFreqHz/fftNumPts;
             pbins = ceil(0.5 * acqDopplerBW / deltaF);
-            faxis = 0.5*fftNumPts-pbins:pbins+0.5*fftNumPts;
+            faxis = 0.5*fftNumPts-pbins+1:pbins+0.5*fftNumPts+1;
             fftFreqBins = (faxis - floor(0.5*fftNumPts)-1) * deltaF;
             
             fftxc = abs(fftshift(fft(rxDataMs, fftNumPts)));
@@ -190,7 +189,7 @@ if acqPrnCount
         chAlgoAcqResults{aprnIdx}.dopplerShiftHz = dopplerShiftHz;
         chAlgoAcqResults{aprnIdx}.codeDelay      = codeDelay;
         chAlgoAcqResults{aprnIdx}.peakMetric     = aprnPeakMetricList(aprnIdx);
-        chAlgoAcqResults{aprnIdx}.dopplerShiftHz = ifFreqEst;
+        chAlgoAcqResults{aprnIdx}.ifFreqEst      = ifFreqEst;
         chAlgoAcqResults{aprnIdx}.satellitePrn   = prnIdx;
         chAlgoAcqResults{aprnIdx}.ddm            = squeeze(delayDopplerMapAcq(prnIdx, :, :));
         chAlgoAcqResults{aprnIdx}.dopplerShiftAxis=dopplerShiftAxis;

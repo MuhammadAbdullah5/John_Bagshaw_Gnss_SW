@@ -6,10 +6,10 @@ if optimizeOption ~= 1 && optimizeOption ~= 2
 end
 
 %%% Parameters
-fileNum = sdrParams.stateParams.numFilesProcessed + 1;
-samplingFreqHz = sdrParams.dataFileParamsList{fileNum}.samplingFreqHz;
-intermFreqHz = sdrParams.dataFileParamsList{fileNum}.intermFreqHz;
-chipRateHz = sdrParams.sysParams.caCodeChipRateHz;
+fileNum         = sdrParams.stateParams.numFilesProcessed + 1;
+samplingFreqHz  = sdrParams.dataFileParamsList{fileNum}.samplingFreqHz;
+intermFreqHz    = sdrParams.dataFileParamsList{fileNum}.intermFreqHz;
+chipRateHz      = sdrParams.sysParams.caCodeChipRateHz;
 acqDopplerBwKhz = sdrParams.sysParams.acqDopplerBwKhz;
 acqDopplerResHz = sdrParams.sysParams.acqDopplerResHz;
 
@@ -24,30 +24,48 @@ end
 % Prepare per algorithm per block common signals
 
 %%% Determine maximum extent to which averaging can be done
-averFactor = [1];
+averFactor = 1;
 temAverFactor = 1;
 while samplingFreqHz/temAverFactor > sdrParams.sysParams.minSamplingFreqHz
     temAverFactor=temAverFactor+1;
     goodAverFactor = samplesPerMs/temAverFactor;
     if floor(goodAverFactor) == goodAverFactor
-        averFactor = [averFactor, temAverFactor];
+        averFactor = temAverFactor;
     end
 end
 
-averFactor = averFactor(end);
-
 %%% each PRN C/A code sequence frequency transform here.
+tic;
 caCodeMappingInd = floor((0:samplesPerMs/averFactor-1) * ...
-    (chipRateHz *averFactor/ samplingFreqHz)) + 1;
+    (chipRateHz * averFactor / samplingFreqHz)) + 1;
 
 caCodeMappingInd(caCodeMappingInd == 0) = 1;
 caCodeMappingInd(caCodeMappingInd > numChipsPerMs) = numChipsPerMs;
 caCodesTable = caCode(:, caCodeMappingInd);
 caCodesTable = conj(fft(caCodesTable, [], 2));
+toc;
+%
 
+
+% compare
+% target data
+% caref=reshape(caCodesTable', 1, 32*2120);
+% trgt=dlmread(...
+% 'C:\Side\John_B\John_Bagshaw_Gnss_SW\cpp\new_project\gnss_sdr\gnss_sdr\norm_ca_fft.txt');
+% 
+% figure;
+% plot(real(caref)); hold on;
+% plot(trgt(:,1), '--');
+% figure;
+% plot(imag(caref)); hold on;
+% plot(trgt(:,2), '--');
+%             
+% figure; plot(real(caref)-trgt(:,1)')
+% figure; plot(imag(caref)-trgt(:,2)')
 
 % Prepare baseband doppler modulated matrix of data
 if optimizeOption == 1
+    tic;
     numDopplerSamples = floor(acqDopplerBwKhz * 1e3 / acqDopplerResHz) + 1;
     intermFreqVec   = intermFreqHz;
     dopplerFreqVec  = acqDopplerResHz*(0:numDopplerSamples-1);
@@ -58,6 +76,7 @@ if optimizeOption == 1
                       
     pprocSignals.dopplerFreqExp = dopplerFreqExp;
     pprocSignals.dopplerResHz = acqDopplerResHz;
+    toc;
 
 elseif optimizeOption == 2
     
@@ -76,11 +95,24 @@ elseif optimizeOption == 2
     pprocSignals.dopplerFreqDeltaExp = dopplerFreqDeltaExp;
     pprocSignals.numDopplerSamples = numDopplerSamples;
     pprocSignals.dopplerResHz = acqDopplerResHz;
-        
+    
+%     caref=reshape(pprocSignals.dopplerFreqInitExp, 1, 1*53000);
+% 
+%     trgt=dlmread(...
+%         'C:\Side\John_B\John_Bagshaw_Gnss_SW\cpp\new_project\gnss_sdr\gnss_sdr\norm_exp.txt');
+%     figure;
+%     plot(real(caref)); hold on;
+%     plot(trgt(:,1), '--');
+%     figure;
+%     plot(imag(caref)); hold on;
+%     plot(trgt(:,2), '--');
+%     figure; plot(real(caref)-trgt(:,1)')
+%     figure; plot(imag(caref)-trgt(:,2)')
+          
 end
 
-pprocSignals.caCodesTable = caCodesTable;
-pprocSignals.averFactor = averFactor;
+pprocSignals.caCodesTable   = caCodesTable;
+pprocSignals.averFactor     = averFactor;
 pprocSignals.optimizeOption = optimizeOption;
 
 

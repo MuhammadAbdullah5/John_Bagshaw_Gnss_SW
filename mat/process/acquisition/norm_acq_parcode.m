@@ -128,18 +128,18 @@ for blIdx=1:numBlocks
     % circular correlation using FFT
     for prn=1:length(prnList)
         circCorrOutMatFd = blockDataN .* ppData.caCodesTable(prn,:);
-        circCorrOutMat(prn,:,:)   = ifft(circCorrOutMatFd, [], 2);
+        circCorrOutMat(prn,:,:) = ifft(circCorrOutMatFd, [], 2);
     end
     % Add result to correlation matrix
     delayDopplerCohMat = delayDopplerCohMat + abs(circCorrOutMat).^2;
     rxDataStartIdx = rxDataStartIdx + numCodeSamples;
 end
 
-acqResults.ddMap = delayDopplerCohMat;
-acqResults.averFactor = averFactor;
+acqResults.ddMap          = delayDopplerCohMat;
+acqResults.averFactor     = averFactor;
 acqResults.numCodeSamples = numCodeSamples;
 acqResults.numDopplerBins = numDopplerSamples;
-acqResults.dopplerResHz = ppData.dopplerResHz;
+acqResults.dopplerResHz   = ppData.dopplerResHz;
 end
 toc;
 

@@ -2,3 +2,7 @@ data/
 cpp/.vs/*
 cpp/ARM/*
 cpp/x64/*
+cpp/.vs/*
+cpp/gnss_sdr/x64/*
+
+

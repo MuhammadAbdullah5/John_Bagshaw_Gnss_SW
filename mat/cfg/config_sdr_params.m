@@ -10,7 +10,7 @@ print_string("Initializing SDR parameters.");
 % Users can specify most important parameters here.
 % TODO: Move these important user settings to settings.txt input file.
 sdrParams.sysParams.acqAlgosList = {'norm_acq_parcode', ...
-                                   % 'weak_acq_dbzp',...
+                                    'weak_acq_dbzp',...
                                    %  'weak_acq_dbzp'   ,...
                                    % Add more... e.g.
                                    % 'weak_acquisition_hb',...
@@ -117,7 +117,7 @@ for fileName=sdrParams.stateParams.fileNames
                 dataParams.selectedChannel  = 1;
                 
             case 'NTLab_Bands_GPS_GLONASS_L12.bin'
-                dataParams.intermFreqHz     = (1590-1575.42)*1e6; % Intermediate frequency
+                dataParams.intermFreqHz     = 1590*1e6-1575.42*1e6; % Intermediate frequency
                 dataParams.samplingFreqHz   = 53e6;               % Sampling frequency
                 dataParams.dataType         = 'ubit2';            % Data type used to store one sample
                 dataParams.isBasebandSignal = 0;

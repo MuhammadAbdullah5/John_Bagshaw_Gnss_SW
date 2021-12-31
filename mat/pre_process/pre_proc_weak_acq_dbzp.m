@@ -21,22 +21,17 @@ end
 % Prepare per algorithm per block common signals
 
 %%% Determine maximum extent to which averaging can be done
-averFactor = [1];
+averFactor = 1;
 temAverFactor = 1;
 while samplingFreqHz/temAverFactor > sdrParams.sysParams.minSamplingFreqHz
     temAverFactor=temAverFactor+1;
-    goodAverFactor = samplesPerCpi/temAverFactor;
+    goodAverFactor = samplesPerMs/temAverFactor;
     if floor(goodAverFactor) == goodAverFactor
-        averFactor = [averFactor, temAverFactor];
+        averFactor = temAverFactor;
     end
 end
-% choose highest dividing factor to maximize number of input samples
-% for one averaged output.
-averFactor = averFactor(end);
-
 
 %%% Find out integer number of samples per block and doppler bins
-
 numSamplesPerCpi = samplesPerCpi / averFactor;
 %number of doppler bins should be atleast 2/t_cpi
 minDopplerBins = round(acqDopplerBwKhz * cpiTimeMs);
@@ -58,7 +53,8 @@ numSamplesPerBlock = numSamplesPerCpi/numDopplerBins;
 % Convert CA code to DBZP format.
     
 %%% Map to samples of 1ms
-caCodeSampleMap = floor((0:samplesPerMs/averFactor-1) * (numChipsPerMs*averFactor/samplesPerMs)) + 1;
+caCodeSampleMap = floor((0:samplesPerMs/averFactor-1) *...
+                        (numChipsPerMs*averFactor/samplesPerMs)) + 1;
 caCodeMapped = caCode(prnList, caCodeSampleMap);
 caCodeMapped = repmat(caCodeMapped, 1, numCaCodeFolds); 
 
@@ -72,8 +68,7 @@ end
 
 
 %%% Prepare baseband doppler modulated matrix of data
-
-dopplerFreqExp  = exp(2i * pi * (intermFreqHz/samplingFreqHz) * (0:samplesPerCpi-1));
+dopplerFreqExp  = exp(2i * pi * (intermFreqHz / samplingFreqHz) * (0:samplesPerCpi-1));
 
 
 %%% Save preprocessing common signals and parameters to used in the 

@@ -5,11 +5,11 @@ function [ outData ] = read_file_data( sdrParams )
 
 
 % Extract relevant parameters
-fileNum = sdrParams.stateParams.numFilesProcessed + 1;
-fileName = sdrParams.stateParams.fileNames{fileNum};
-dataType = sdrParams.dataFileParamsList{fileNum}.dataType;
+fileNum        = sdrParams.stateParams.numFilesProcessed + 1;
+fileName       = sdrParams.stateParams.fileNames{fileNum};
+dataType       = sdrParams.dataFileParamsList{fileNum}.dataType;
 samplingFreqHz = sdrParams.dataFileParamsList{fileNum}.samplingFreqHz;
-totalChannels = sdrParams.dataFileParamsList{fileNum}.totalChannels;
+totalChannels  = sdrParams.dataFileParamsList{fileNum}.totalChannels;
 selectedChannel = sdrParams.dataFileParamsList{fileNum}.selectedChannel;
 skipNumberOfBytes = sdrParams.sysParams.skipNumberOfBytes;
 

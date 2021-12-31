@@ -65,14 +65,24 @@ for prnIdx = 1:numPrns
     caCode = squeeze(caCodesTable(prnIdx, :, :));
     
     %%% Iterate over each permuation
+    caCodeFftMat = conj(fft(caCode));
+    dataFftMat   = fft(dataBB);
+    
     for permIdx = 1:numBlocks
         
         %%% Generate Permuted DBZP matrix
         permMap = circshift(1:numBlocks, permIdx-1, 2);
-        caCodeDbzpedPerm = caCode(:, permMap);
+        caCodeDbzpedPerm = caCodeFftMat(:, permMap);
         
         %%% Partial correlation using FFT
-        parCorrOutput = ifft(fft(dataBB) .* conj(fft(caCodeDbzpedPerm)));
+        parCorrOutput = ifft(dataFftMat .* caCodeDbzpedPerm);
+        
+%         for i=1:numBlocks
+%             plot(abs(parCorrOutput(1:40, i))); 
+%             shg
+%             i
+%             shg
+%         end
         
         %%% Put partial correlation results in the buffer
         

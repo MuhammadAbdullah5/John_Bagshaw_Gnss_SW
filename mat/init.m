@@ -25,6 +25,10 @@ print_string("===============================================================");
 print_string(['Welcome! MATLAB Reference Software-Defined Radio: ', swName]);
 print_string("===============================================================");
 
+% Set precision to single 
+% feature('SetPrecision', 53);
+
+
 % Do parameter configuration.
 sdrParams = config_sdr_params();
 
